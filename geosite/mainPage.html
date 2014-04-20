@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<head>     
+    <title>Сайтик</title>
+    <script src="jquery.js"></script>
+	<script src="ui.core.js"></script>
+    <script src="ui.dropdownchecklist.js"></script>
+	<link rel="stylesheet" type="text/css" href="ui.dropdownchecklist.css" />
+	<link rel="stylesheet" type="text/css" href="style.css" />
+    <script>
+        $(document).ready(function () {
+			//w=$("#tdFilter").getWidth();
+             $("#s1").dropdownchecklist({width:400});
+			 $("#d1").hide();
+			 $("#but1").click(function(){
+				$("#d1").show();
+			});
+        });
+		
+    </script>
+<head>
+<body>
+    <table>
+        <tr id="tr1">
+            <td id="tdLocationInput">
+                <input type="text" id="inputLocation" value="Задать местоположение" /></td>
+            <td id="tdFilter"><div id="d2">Фильтр:</div>
+                <select id="s1" multiple="multiple">
+                    <option selected="selected">Музеи</option>
+                    <option selected="selected">Театры</option>
+                    <option selected="selected">Парки</option>
+                    <option selected="selected">Зоопарки</option>
+                    <option selected="selected">не забыть добавить</option>
+                </select>
+            </td>
+            <td id="tdName">Здесь будет название(или нет)</td>
+        </tr>
+        <tr id="tr2">
+            <td colspan="2" id="tdMap">
+				<h1>Карта будет здесь</h1>
+				<button id="but1">Я есть</button>
+			</td>
+            <td id="tdInfo">
+				<div id = "d1">
+					Доп инфа
+				</div>
+			</td>
+        </tr>
+    </table>
+<body>
