@@ -1,0 +1,92 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>     
+    <title>Сайтик</title>
+    <script src="~/JS/jquery.js"></script>
+	<script src="~/JS/ui.core.js"></script>
+    <script src="~/JS/ui.dropdownchecklist.js"></script>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCULi_E3r3_ubGr6LDGMZm3nOqHR-4JN5E&sensor=true">
+    </script>
+	<link rel="stylesheet" type="text/css" href="~/CSS/ui.dropdownchecklist.css" />
+	<link rel="stylesheet" type="text/css" href="~/CSS/style.css" />
+    <script>
+        $(document).ready(function () {
+            //w=$("#tdFilter").getWidth();
+            $("#s1").dropdownchecklist({ width: 400 });
+            $("#d1").hide();
+            
+        });
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(map_initialize, no_geolocation, {'timeout': 10000});
+            }
+            else {
+                no_geolocation();
+            }
+        }
+
+        function no_geolocation() {
+            var position = {
+                'coords': {
+                    'latitude': 59.95,
+                    'longitude': 30.316667
+                }
+            };
+            map_initialize(position);
+        }
+        
+        function map_initialize(position) {
+            var mapOptions = {
+                center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+                zoom: 8,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map_canvas"),
+                mapOptions);
+
+            /**
+             *   Example of partial page refresh and marker events
+             */
+            var marker = new google.maps.Marker({ position: mapOptions.center, map: map });
+            google.maps.event.addListener(marker, 'click', function () {
+                $.post("Home/RandomNumber", { a: 0, b: 10 }, function (data) { $("#d1").html("<b>Random number: " + data + "</b>"); $("#d1").show();});
+            });
+        }
+
+    </script>
+<head>
+<body onload="getLocation()">
+    <table>
+        <tr id="tr1">
+            <td id="tdLocationInput">
+                <input type="text" id="inputLocation" value="Задать местоположение" /></td>
+            <td id="tdFilter"><div id="d2">Фильтр:</div>
+                <select id="s1" multiple="multiple">
+                    <option selected="selected">Музеи</option>
+                    <option selected="selected">Театры</option>
+                    <option selected="selected">Парки</option>
+                    <option selected="selected">Зоопарки</option>
+                    <option selected="selected">не забыть добавить</option>
+                </select>
+            </td>
+            <td id="tdName">Здесь будет название(или нет)</td>
+        </tr>
+        <tr id="tr2">
+            <td colspan="2" id="tdMap">
+				<div id="map_canvas" style="width:100%; height:100%"></div>
+			</td>
+            <td id="tdInfo">
+				<div id = "d1">
+					Доп инфа
+				</div>
+			</td>
+        </tr>
+    </table>
+<body>
+</html>
