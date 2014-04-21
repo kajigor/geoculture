@@ -1,8 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 
 namespace Geoculture.Controllers
 {
@@ -31,5 +36,42 @@ namespace Geoculture.Controllers
             }
         }
 
+        public string Institutions()
+        {
+            // TODO: Make it right
+            using (SqlConnection con = new SqlConnection("Data Source=Lia\\MSSQLSERVER2012;Initial Catalog=GeoCultureDB;Integrated Security=True"))
+            {
+                SqlCommand com = new SqlCommand("SELECT * FROM InstitutionBaseInfo", con);
+                List<Models.InstitutionBaseInfo> institutions = new List<Models.InstitutionBaseInfo>();
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    Models.InstitutionBaseInfo info = Models.InstitutionBaseInfo.fromSqlDataReader(reader);
+                    institutions.Add(info);
+                }
+                return JsonConvert.SerializeObject(institutions);
+            }
+        }
+
+        public string Wiki()
+        {
+            try
+            {
+                string title = Request.Form["title"];
+                string url = "http://ru.wikipedia.org/w/api.php?format=xml&action=parse&page=" + title + "&prop=text&section=0";
+                var request = WebRequest.Create(url);
+                var response = request.GetResponse();
+                XmlReader reader = XmlReader.Create(response.GetResponseStream());
+                reader.ReadToFollowing("text");
+                string result = reader.ReadElementContentAsString();
+                reader.Close();
+                return result;
+            }
+            catch (Exception e)
+            {
+                return "Ошибка! Что-то пошло не так";
+            }
+        }
     }
 }

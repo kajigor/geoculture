@@ -19,8 +19,11 @@
             //w=$("#tdFilter").getWidth();
             $("#s1").dropdownchecklist({ width: 400 });
             $("#d1").hide();
-            
         });
+
+        var map;
+        var markers = [];
+
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(map_initialize, no_geolocation, {'timeout': 10000});
@@ -43,19 +46,69 @@
         function map_initialize(position) {
             var mapOptions = {
                 center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-                zoom: 8,
+                zoom: 11,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            var map = new google.maps.Map(document.getElementById("map_canvas"),
-                mapOptions);
-
+            map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+            loadInstitutions();
             /**
-             *   Example of partial page refresh and marker events
-             */
+                Example of partial page refresh and marker events
+             
             var marker = new google.maps.Marker({ position: mapOptions.center, map: map });
             google.maps.event.addListener(marker, 'click', function () {
-                $.post("Home/RandomNumber", { a: 0, b: 10 }, function (data) { $("#d1").html("<b>Random number: " + data + "</b>"); $("#d1").show();});
+                $.post("Home/RandomNumber", function (data) { $("#d1").html("<b>Random number: " + data + "</b>"); $("#d1").show(); });
             });
+            */
+        }
+
+        function getContent(institution) {
+            var content = institution.Name + "<br>";
+            if (institution.Email)
+                content += "email: " + institution.Email + "<br>";
+            if (institution.Phone)
+                content += "телефон: " + institution.Phone + "<br>";
+            if (institution.Site)
+                content += 'сайт: <a href="' + institution.Site + '">' + institution.Site + '</a><br>';
+            if (institution.WorkingHours)
+                content += "время работы: " + institution.WorkingHours;
+            return content;
+        }
+
+        function insertMarkers(data) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+            institutions = JSON.parse(data);
+            var infoWindow = new google.maps.InfoWindow();
+            for (var i = 0; i < institutions.length ; i++) {
+                var institution = institutions[i];
+                var position = new google.maps.LatLng(institution.Lat, institution.Lng)
+                var marker = new google.maps.Marker({ position: position, map: map });
+                makeInfoWindowEvent(map, infoWindow, institution, marker);
+                markers.push(marker);
+            }
+            google.maps.event.addListener(infoWindow, 'closeclick', function() { $("#d1").html("");});
+        }
+
+        function makeInfoWindowEvent(map, infowindow, institution, marker) {
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(getContent(institution));
+                infowindow.open(map, marker);
+                loadWiki(institution);
+            });
+        }
+
+        function loadWiki(institution) {
+            $("#d1").show();
+            $("#d1").html("Загружаем Википедию...");
+            $.post("Home/Wiki", { title: institution.Name }, function (data) {
+                $("#d1").html(data);
+            });
+        }
+
+        function loadInstitutions() {
+            $.post("Home/Institutions", {}, insertMarkers);
         }
 
     </script>
@@ -74,7 +127,7 @@
                     <option selected="selected">не забыть добавить</option>
                 </select>
             </td>
-            <td id="tdName">Здесь будет название(или нет)</td>
+            <td id="tdName">Культурные места Санкт-Петербурга</td>
         </tr>
         <tr id="tr2">
             <td colspan="2" id="tdMap">
