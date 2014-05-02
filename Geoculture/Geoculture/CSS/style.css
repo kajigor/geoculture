@@ -27,7 +27,8 @@ width:30%;
 #tdName
 {
 background-color:#ffffff;
-width:20%;
+font: bold 24px verdana; 
+
 }
 #tdMap
 {
