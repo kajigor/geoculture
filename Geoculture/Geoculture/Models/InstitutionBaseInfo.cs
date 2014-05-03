@@ -18,6 +18,7 @@ namespace Geoculture.Models
         public int Type { get; set; }
         public string Site { get; set; }
         public string WorkingHours { get; set; }
+        public string Icon { get; set; }
 
         public static InstitutionBaseInfo fromSqlDataReader(SqlDataReader reader)
         {
@@ -32,9 +33,33 @@ namespace Geoculture.Models
                 Phone = reader.GetString(6),
                 Type = reader.GetInt32(7),
                 Site = reader.GetString(8),
-                WorkingHours = reader.GetString(9)
+                WorkingHours = reader.GetString(9),
+                Icon = GetIconUrl(reader.GetInt32(7))
             };
-            
+        }
+
+        public static string GetIconUrl(int type)
+        {
+            string iconColor;
+            switch (type)
+            {
+                case 1:
+                    iconColor = "blue";
+                    break;
+                case 2:
+                    iconColor = "green";
+                    break;
+                case 3:
+                    iconColor = "pink";
+                    break;
+                case 4:
+                    iconColor = "yellow";
+                    break;
+                default:
+                    iconColor = "ltblue";
+                    break;
+            }
+            return "http://maps.google.com/mapfiles/ms/icons/" + iconColor + "-dot.png";
         }
     }
 }

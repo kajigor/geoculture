@@ -18,11 +18,12 @@
         $(document).ready(function () {
             //w=$("#tdFilter").getWidth();
             $("#s1").dropdownchecklist({ width: 400 });
-            $("#d1").hide();
+            $("#tdInfo").hide();
         });
 
         var map;
         var markers = [];
+        var youAreHereMarker;
 
         function getLocation() {
             if (navigator.geolocation) {
@@ -46,19 +47,15 @@
         function map_initialize(position) {
             var mapOptions = {
                 center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-                zoom: 11,
+                zoom: 14,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
             loadInstitutions();
-            /**
-                Example of partial page refresh and marker events
-             
-            var marker = new google.maps.Marker({ position: mapOptions.center, map: map });
-            google.maps.event.addListener(marker, 'click', function () {
-                $.post("Home/RandomNumber", function (data) { $("#d1").html("<b>Random number: " + data + "</b>"); $("#d1").show(); });
+            youAreHereMarker = new google.maps.Marker({
+                position: mapOptions.center, map: map,
+                icon: new google.maps.MarkerImage('http://google.com/mapfiles/arrow.png')
             });
-            */
         }
 
         function getContent(institution) {
@@ -67,8 +64,20 @@
                 content += "email: " + institution.Email + "<br>";
             if (institution.Phone)
                 content += "телефон: " + institution.Phone + "<br>";
-            if (institution.Site)
-                content += 'сайт: <a href="' + institution.Site + '">' + institution.Site + '</a><br>';
+            if (institution.Site) {
+                content += 'сайт: ';
+                var sites = institution.Site.split(',');
+                var http = 'http://';
+                for (var i = 0; i < sites.length; i++) {
+                    var site = sites[i].trim();
+                    if (!(site.substr(0, http.length) == http))
+                        site = http + site;
+                    if (i > 0)
+                        content += ', ';
+                    content += '<a href="' + site + '">' + site + '</a>';
+                }
+                content += '<br>';
+            }
             if (institution.WorkingHours)
                 content += "время работы: " + institution.WorkingHours;
             return content;
@@ -83,19 +92,24 @@
             var infoWindow = new google.maps.InfoWindow();
             for (var i = 0; i < institutions.length ; i++) {
                 var institution = institutions[i];
-                var position = new google.maps.LatLng(institution.Lat, institution.Lng)
-                var marker = new google.maps.Marker({ position: position, map: map });
+                var position = new google.maps.LatLng(institution.Lat, institution.Lng);
+                var marker = new google.maps.Marker({ position: position, map: map, icon: new google.maps.MarkerImage(institution.Icon) });
                 makeInfoWindowEvent(map, infoWindow, institution, marker);
                 markers.push(marker);
             }
-            google.maps.event.addListener(infoWindow, 'closeclick', function() { $("#d1").html("");});
+            makeInfoWindowEvent(map, infoWindow, null, youAreHereMarker);
+            google.maps.event.addListener(infoWindow, 'closeclick', function() { $("#tdInfo").hide();});
         }
 
         function makeInfoWindowEvent(map, infowindow, institution, marker) {
             google.maps.event.addListener(marker, 'click', function () {
-                infowindow.setContent(getContent(institution));
+                var content = (institution == null) ? "You are here" : getContent(institution);
+                map.panTo(marker.getPosition());
+                infowindow.setContent(content);
                 infowindow.open(map, marker);
-                loadWiki(institution);
+                if (institution != null) {
+                    loadWiki(institution);
+                }
             });
         }
 
@@ -103,7 +117,8 @@
             $("#d1").show();
             $("#d1").html("Загружаем Википедию...");
             $.post("Home/Wiki", { title: institution.Name }, function (data) {
-                $("#d1").html(data);
+                $("#tdInfo").show();
+                $("#tdInfo").html(data);
             });
         }
 

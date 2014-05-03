@@ -36,7 +36,8 @@ background-color:#ffffff;
 }
 #tdInfo
 {
-background-color:#cccccc;
+background-color:#eee;
+overflow-x: hidden;
 }
 #inputLocation
 {
