@@ -121,37 +121,47 @@
         }
 
         function loadInstitutions() {
-            $.post("Home/Institutions", {}, insertMarkers);
+            inputArray = document.getElementsByTagName("input");
+            $.post("Home/Institutions", {
+                ch1: inputArray[0].checked, ch2: inputArray[1].checked, ch3: inputArray[2].checked,
+                ch4: inputArray[3].checked, ch5: inputArray[4].checked, ch6: inputArray[5].checked,
+                ch7: inputArray[6].checked, ch8: inputArray[7].checked
+            },
+                insertMarkers);
         }
 
     </script>
 </head>
 <body onload="getLocation()">
-    <table>
-        <tr id="tr1">
-            <!--
-            <td id="tdLocationInput">
-                <input type="text" id="inputLocation" value="Задать местоположение" /></td>
-            <td id="tdFilter"><div id="d2">Фильтр:</div>
-                <select id="s1" multiple="multiple">
-                    <option selected="selected">Музеи</option>
-                    <option selected="selected">Театры</option>
-                    <option selected="selected">Парки</option>
-                    <option selected="selected">Зоопарки</option>
-                    <option selected="selected">не забыть добавить</option>
-                </select>
-            </td>
-            -->            
+    <table> 
+        <tr style="height:10%;max-height:20px">
             <td id="tdName" style=""> 
-                <center>St. Petersburg Cultural Institutions Catalogue</center></td>
-            <tr id="tr2">
-                <td colspan="2" id="tdMap">
-                    <div style="position:relative;width:100%; height:100%">
-				        <div id="map_canvas" style="width:100%; height:100%"></div>
-			            <div id="tdInfo"  style="position:absolute;right:0px;top:0px;overflow:scroll;max-width:33%;height:100%"></div>
-                    </div>
-                </td>
-            </tr>
+                 <center>St. Petersburg Cultural Institutions Catalogue</center></td>
+        </tr>
+        <tr style="height:5%;max-height:20px">
+           <td id="tdFilter">
+                <form>
+                    Фильтры: 
+                    <input value="ch1" type="checkbox" onchange = 'loadInstitutions();' checked="checked" />Музеи</>
+                    <input value="ch2" type="checkbox" onchange = 'loadInstitutions();'/>Театры</>
+                    <input value="ch3" type="checkbox" onchange = 'loadInstitutions();'/>Высnавочные залы</>
+                    <input value="ch4" type="checkbox" onchange = 'loadInstitutions();'/>Концертные залы</>
+                    <input value="ch5" type="checkbox" onchange = 'loadInstitutions();'/>Кинотеатры<br/>
+                    Фильтры по наличию:                                   
+                    <input value="ch6" type="checkbox" onchange = 'loadInstitutions();'  />Телефона</>
+                    <input value="ch7" type="checkbox" onchange = 'loadInstitutions();'  />Официального сайта</>
+                    <input value="ch8" type="checkbox" onchange = 'loadInstitutions();'  />Email</>
+                </form>
+           </td>
+        </tr>
+        <tr id="tr2">
+            <td colspan="2" id="tdMap">
+                <div style="position:relative;width:100%; height:100%">
+				    <div id="map_canvas" style="width:100%; height:100%"></div>
+			        <div id="tdInfo"  style="position:absolute;right:0px;top:0px;overflow:scroll;max-width:33%;height:100%"></div>
+                </div>
+            </td>
+        </tr>
     </table>
 </body>
 </html>
