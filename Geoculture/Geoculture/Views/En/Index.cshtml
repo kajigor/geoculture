@@ -1,0 +1,77 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>     
+    <title>Geoculture</title>
+    <script src="~/JS/jquery.js"></script>
+	<script src="~/JS/ui.core.js"></script>
+    <script src="~/JS/ui.dropdownchecklist.js"></script>
+    <script src="~/JS/geoculture.js"></script>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCULi_E3r3_ubGr6LDGMZm3nOqHR-4JN5E&sensor=true">
+    </script>
+	<link rel="stylesheet" type="text/css" href="~/CSS/ui.dropdownchecklist.css" />
+	<link rel="stylesheet" type="text/css" href="~/CSS/style.css" />
+</head>
+<body onload="getLocation()">
+    <div style="position:relative;width:100%; height:100%">	
+        <div id="mapCanvas"></div>
+		<div id="rightTab">        
+            <div id="Info">
+                <div id="InfoHeader">
+                    <b>Discover new intresting places in Saint Petersburg!</b>
+                </div>
+                    <div id="InfoSubheader">
+                    We will show you cultural institutions near you.
+                    </div>
+                </div>
+                <div id="tdFilter">
+                <form>
+                    Show only:<br />
+                    <div style="padding-left:20px;padding-right:20px">
+                        <div style="float:left;font-size:18px;">
+                            <input value="ch1" type="checkbox" onchange = 'loadInstitutions();' checked />Museums<br/>
+                            <input value="ch2" type="checkbox" onchange = 'loadInstitutions();' checked/>Theatres<br/>
+                            <input value="ch3" type="checkbox" onchange = 'loadInstitutions();' checked/>Exhibition halls<br/>
+                            <input value="ch4" type="checkbox" onchange = 'loadInstitutions();' checked/>Concert halls<br/>
+                            <input value="ch5" type="checkbox" onchange = 'loadInstitutions();' checked/>Cinemas<br/>
+                        </div>
+                        <div style="float:right;font-size:18px;">
+                            <input value="ch6" type="checkbox" onchange = 'loadInstitutions();'  />Has phone<br/>
+                            <input value="ch7" type="checkbox" onchange = 'loadInstitutions();'  />Has website<br/>
+                            <input value="ch8" type="checkbox" onchange = 'loadInstitutions();'  />Has Email<br/>
+                        </div>
+                        
+                   </div>
+                </form>
+        </div>
+
+        <div id="Switch">
+            <a href="/">Русская версия</a>
+        </div>
+        <div id="About">
+            Service is implemented during the "Software engineering" course on
+             Mathematics and Mechanics faculty of St. Petersburg State University by:
+            <ul> 
+                <li>Liana Bakradze;</li>
+                <li>Yulia Bykova; </li>
+                <li>Ekaterina Verbitskaya;</li>
+                <li>Aleksandr Samofalov.</li>
+            </ul>
+            <center>2014</center>
+        </div>
+            <div id="tdInfo">
+                <div style="width:100%;padding-right:10px;">
+                <button id="closeInfo" onclick="closeInfo();">
+                    X
+                </button>
+                </div>
+                <div id="wikiData" style="padding:5px;"/>
+            </div>
+        </div>
+        </div>
+</body>
+</html>

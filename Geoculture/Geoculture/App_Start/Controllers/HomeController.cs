@@ -21,24 +21,9 @@ namespace Geoculture.Controllers
             return View();
         }
 
-        public string RandomNumber()
-        {
-            try
-            {
-                int a = int.Parse(Request.Form["a"]);
-                int b = int.Parse(Request.Form["b"]);
-                int r = new Random().Next(a, b);
-                return r.ToString();
-            }
-            catch (Exception e)
-            {
-                return "Bad-bad-bad request!";
-            }
-        }
-
         public string Institutions()
         {
-            // TODO: Make it right
+            // TODO: This code needs massive refactor, but i'm too lazy
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["geoculture"].ConnectionString))
             {
                 try
@@ -195,9 +180,9 @@ namespace Geoculture.Controllers
                 reader.Close();
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return "Ошибка! Что-то пошло не так";
+                return "error";
             }
         }
     }

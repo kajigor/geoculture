@@ -1,62 +1,83 @@
-body 
-{
+body {
 	background-color:#008cff;
 	background-repeat:no-repeat;
 }
-html, body
-{
-height: 99%;
-}
-table
-{
-border-collapse:collapse;
 
-width:100%;
-height:100%;
+html, body {
+    height: 99%;
 }
-#tdLocationInput
-{
-background-color:#ffffff;
-width:50%;
-}
-#tdFilter
-{
-background-color:#F0FFFF;
-font-size: 16px;
-width:10%;
-}
-#tdName
-{
-background-color:#ffffff;
-font: bold 24px verdana; 
 
+#mapCanvas {
+    width:67%; 
+    height:100%
 }
-#tdMap
-{
-background-color:#ffffff;
+
+#rightTab {
+    width:33%;
+    height:100%;
+    position:absolute;
+    top:0px;
+    right:0px;
+    background-color:#FFF;
 }
-#tdInfo
-{
-background-color:#eee;
-overflow-x: hidden;
+
+#Info {
+    padding-top: 15px;
 }
-#inputLocation
-{
-width:98%;
-float: center;
-margin:10px;
+#InfoHeader {
+    text-align: center;
+    font-size: 22px;
 }
-#d2
-{
-width:15%;
-float:left;
+
+#InfoSubheader {
+    font-size: 20px;
+    padding-top: 20px;
+    padding-left: 10px;
 }
-#s1
-{
-width:75%;
-float:right;
+
+#tdFilter {
+    font-size: 20px;
+    padding-left: 10px;
+    padding-top: 20px;
+    min-width: 100%;
+    overflow-y: hidden;
 }
-#tr1
-{
-height:50px;
+
+#About {
+    position: absolute;
+    bottom: 0px;
+    padding-left: 10px;
+    margin-bottom: 40px;
+    padding-right: 10px;
+}
+
+ul {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#tdInfo {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    overflow: scroll;
+    max-width: 100%;
+    height: 100%;
+    background: #fff;
+}
+
+#closeInfo {
+    background: none;
+    border: 1px solid black;
+    font-size: 15px;
+    float: right;
+}
+
+#Switch {
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    position:absolute;
+    bottom:0px;
 }

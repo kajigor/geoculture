@@ -104,6 +104,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\Controllers\EnController.cs" />
     <Compile Include="App_Start\Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -378,11 +379,11 @@
     <Content Include="Icons\yellow_MarkerX.png" />
     <Content Include="Icons\yellow_MarkerY.png" />
     <Content Include="Icons\yellow_MarkerZ.png" />
+    <Content Include="JS\geoculture.js" />
     <Content Include="JS\jquery-2-1-0-min.js" />
     <Content Include="JS\jquery.js" />
     <Content Include="JS\ui.core.js" />
     <Content Include="JS\ui.dropdownchecklist.js" />
-    <Content Include="Views\Home\blue_MarkerO.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -406,6 +407,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icons\markers.psd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\En\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
