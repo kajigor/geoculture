@@ -39,18 +39,30 @@ namespace Geoculture.Controllers
         public string Institutions()
         {
             // TODO: Make it right
-            using (SqlConnection con = new SqlConnection("Data Source=Lia\\MSSQLSERVER2012;Initial Catalog=GeoCultureDB;Integrated Security=True"))
+            using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["geoculture"].ConnectionString))
             {
                 SqlCommand com = new SqlCommand("SELECT * FROM InstitutionBaseInfo", con);
                 List<Models.InstitutionBaseInfo> institutions = new List<Models.InstitutionBaseInfo>();
-                con.Open();
-                SqlDataReader reader = com.ExecuteReader();
-                while (reader.Read())
+                try
                 {
-                    Models.InstitutionBaseInfo info = Models.InstitutionBaseInfo.fromSqlDataReader(reader);
-                    institutions.Add(info);
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Models.InstitutionBaseInfo info = Models.InstitutionBaseInfo.fromSqlDataReader(reader);
+                        institutions.Add(info);
+                    }
+                    return JsonConvert.SerializeObject(institutions);
                 }
-                return JsonConvert.SerializeObject(institutions);
+                catch (Exception e)
+                {
+                    return e.Message;
+                }
+                finally
+                {
+                    con.Close();
+                }
+                
             }
         }
 

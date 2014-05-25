@@ -114,14 +114,14 @@
         }
 
         function loadWiki(institution) {
-            $.post("Home/Wiki", { title: institution.Name }, function (data) {
+            $.post(document.URL + "/Home/Wiki", { title: institution.Name }, function (data) {
                 $("#tdInfo").fadeIn("fast");
                 $("#tdInfo").html(data);
             });
         }
 
         function loadInstitutions() {
-            $.post("Home/Institutions", {}, insertMarkers);
+            $.post(document.URL + "/Home/Institutions", {}, insertMarkers);
         }
 
     </script>
@@ -142,10 +142,11 @@
                 </select>
             </td>
             -->            
-            <td id="tdName" style=""> 
-                <center>St. Petersburg Cultural Institutions Catalogue</center></td>
+            <td id="tdName" style="text-align:center"> 
+                St. Petersburg Cultural Institutions Catalogue</td>
+            </tr>
             <tr id="tr2">
-                <td colspan="2" id="tdMap">
+                <td id="tdMap">
                     <div style="position:relative;width:100%; height:100%">
 				        <div id="map_canvas" style="width:100%; height:100%"></div>
 			            <div id="tdInfo"  style="position:absolute;right:0px;top:0px;overflow:scroll;max-width:33%;height:100%"></div>
